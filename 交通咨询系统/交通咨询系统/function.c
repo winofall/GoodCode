@@ -40,7 +40,7 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
     char tempname[] = "temp.txt";
     FILE* temp = fopen(tempname, "w");
     if (temp == NULL) {
-        printf("Error creating temporary file.\n");
+        printf("创建出错\n");
         fclose(file);
         return;
     }
