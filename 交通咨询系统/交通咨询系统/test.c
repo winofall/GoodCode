@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <head.h>
-#include <function.c>
+#include "function.c"
 int main()
 {
   char password[100]={'6','6','6','6'},Up[100];
