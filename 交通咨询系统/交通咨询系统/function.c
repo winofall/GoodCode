@@ -13,6 +13,7 @@ void CheckNode(Node* head,char start[],char end[])
     if(!(strcmp(start,(p->info).start))&&!(strcmp(end,(p->info).end)))
     {
       printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.",start,end,(p->info).infoCar.distance,(p->info).infoCar.cost,(p->info).infoCar.time,(p->info).infoTrain.cost,(p->info).infoTrain.time);
+      break;
     }
     else
     {
@@ -36,6 +37,7 @@ void DeleteNode(Node* head,char start[],char end[])
       p->next->pre=p->pre;
       free(p);
       printf("删除成功");
+      break;
     }
     else
     {
