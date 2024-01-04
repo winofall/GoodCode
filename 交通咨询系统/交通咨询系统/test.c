@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include ”head.h“
+#include "head.h"
 #include "function.c"
 int main()
 {
@@ -41,11 +41,10 @@ while(n){
             case 3://减少信息;
             case 4://退出管理员系统;    
             }
-    }
-    else{
+      }
+   } else{
       printf("密码错误\n");
     }
-  }
 }
 system("pause");
 return 0;
