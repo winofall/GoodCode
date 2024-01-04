@@ -6,7 +6,7 @@ typedef struct infoCar{
   double time;
 }InfoCar;
 typedef struct infoTrain{
-  double cost;
+  double cost=0;
   double time;
 }InfoTrain;
 typedef struct info{
