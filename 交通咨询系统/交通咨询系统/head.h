@@ -6,7 +6,7 @@ typedef struct infoCar {
 	double time;
 }InfoCar;
 typedef struct infoTrain {
-	double cost = 0;
+	double cost;
 	double time;
 }InfoTrain;
 typedef struct info {
@@ -20,6 +20,11 @@ typedef struct node {
 	Node* next;
 	Node* pre;
 }Node;
+typedef struct graph {
+	Node* head;
+	double value[100][100];
+	char place[100][20];
+}MGraph;
 Node* InitNode();
 void CheckNode(Node* head, char start[], char end[]);//查询该结点信息
 void CheckList(Node* head, int start, int end);
