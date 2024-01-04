@@ -67,8 +67,11 @@ void CreateNode(Node* head, char start[], char end[], const char* filename) {
         double carDistance, carCost, carTime, trainCost, trainTime;
 
         // 假设文件中的格式为："起始地点 终点地点 私家车距离 私家车费用 私家车时间 火车费用 火车时间"
+        if(trainCost!=0){
         sscanf(buffer, "%s %s %lf %lf %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime, &trainCost, &trainTime);
-
+        }else{
+        sscanf(buffer, "%s %s %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime);    
+        }
         // 创建一个新节点并填充信息
         Node* newNode = InitNode();
         strcpy(newNode->info.start, fileStart);
