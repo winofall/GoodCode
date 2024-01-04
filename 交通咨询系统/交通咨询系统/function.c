@@ -53,3 +53,39 @@ void DeleteNode(Node* head,char start[],char end[])
     printf("没有相关记录");
   }  
 }
+void CreateNode(Node *head, char start[], char end[], const char *filename) {
+    FILE *file = fopen(filename, "1.txt");//打开文件
+    if (file == NULL) {
+        printf("无法打开: %s\n", filename);
+        return;
+    }
+
+    char buffer[256]; // 假设一行不超过 256 个字符
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        // 从文件中读取每一行的信息
+        char fileStart[V], fileEnd[V];
+        double carDistance, carCost, carTime, trainCost, trainTime;
+
+        // 假设文件中的格式为："起始地点 终点地点 私家车距离 私家车费用 私家车时间 火车费用 火车时间"
+        sscanf(buffer, "%s %s %lf %lf %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime, &trainCost, &trainTime);
+
+        // 创建一个新节点并填充信息
+        Node *newNode = InitNode();
+        strcpy(newNode->info.start, fileStart);
+        strcpy(newNode->info.end, fileEnd);
+        newNode->info.infoCar.distance = carDistance;
+        newNode->info.infoCar.cost = carCost;
+        newNode->info.infoCar.time = carTime;
+        newNode->info.infoTrain.cost = trainCost;
+        newNode->info.infoTrain.time = trainTime;
+
+        // 将新节点添加到链表中
+        Node *current = head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+
+    fclose(file);
+}
