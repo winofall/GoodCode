@@ -1,5 +1,5 @@
 #pragma once
-#difine V 10
+#define V 10
 typedef struct infoCar{
   double distance;
   double cost;
