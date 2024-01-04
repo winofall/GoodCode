@@ -24,6 +24,9 @@ while(n){
     case 2://查询最少金额;
     case 3://查询最短时间;
     case 4://进入管理员系统;
+    default:
+      printf("输入错误");
+      continue;
     scanf("%s",Up);
     if(strcmp(Up,password)){
       printf("进入成功\n");
@@ -39,7 +42,10 @@ while(n){
             case 1://增加信息;
             case 2://查询所有信息;
             case 3://减少信息;
-            case 4://退出管理员系统;    
+            case 4://退出管理员系统;   
+            default:
+                    printf("输入错误");
+                    continue;
             }
       }
    } else{
