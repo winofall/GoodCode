@@ -19,14 +19,16 @@ while(n){
   printf("----------4.进入管理员系统----------\n");
   scanf("%d",&n);
   switch(n){
-    case 0:printf("退出成功\n");
+    case 0:
+      printf("退出成功\n");
+      break;
     case 1://查询最短路径;
+      break;
     case 2://查询最少金额;
+      break;
     case 3://查询最短时间;
+      break;
     case 4://进入管理员系统;
-    default:
-      printf("输入错误");
-      continue;
     scanf("%s",Up);
     if(strcmp(Up,password)){
       printf("进入成功\n");
@@ -38,19 +40,29 @@ while(n){
           printf("----------4.退出管理员系统----------\n");
           scanf("%d",&n);
           switch(n){
-            case 0:printf("退出模式成功\n");
+            case 0:
+              printf("退出模式成功\n");
+              break;
             case 1://增加信息;
+              break;
             case 2://查询所有信息;
+              break;
             case 3://减少信息;
+              break;
             case 4://退出管理员系统;   
+              break;
             default:
-                    printf("输入错误");
-                    continue;
+              printf("输入错误");
+              break;
             }
       }
    } else{
       printf("密码错误\n");
     }
+      break;
+    default:
+      printf("输入错误");
+      break;
 }
 system("pause");
 return 0;
