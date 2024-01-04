@@ -21,7 +21,11 @@ typedef struct node{
   Node *pre;
 }Node;
 Node *InitNode();
-void CheckNode(Node* head,char start[],char end[]);
+void CheckNode(Node* head,char start[],char end[]);//查询该结点信息
 void CheckList(Node* head,int start,int end);
-void DeleteNode(Node* head,char start[],char end[]);
-void CreateNode(Node* head,char start[],char end[]);
+void DeleteNode(Node* head,char start[],char end[]);//删除该节点
+void CreateNode(Node* head,char start[],char end[]);//从文件中获取信息，建立结点
+void GetMoney(Node* head,char start[],char end[]);//从给的起始点，在链表中找出cost最小的路径
+void GetDis(Node* head,char start[],char end[]);//从给的起始点，在链表中找出distance最小的路径
+void GetTime(Node* head,char start[],char end[]);//从给的起始点，在链表中找出time最小的路径
+void AddNode(Node* head,char start[],char end[],double CarDistance,double CarCost,double Cartime,double TrainCost,double TrainTime);//更新与start，end的结点的数据
