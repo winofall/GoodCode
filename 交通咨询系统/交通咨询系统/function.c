@@ -24,3 +24,26 @@ void CheckNode(Node* head,char start[],char end[])
     printf("没有相关记录");
   }  
 }
+void DeleteNode(Node* head,char start[],char end[])
+{
+  Node* p;
+  p=head;
+  while(p!=NULL)
+  {
+    if(!(strcmp(start,(p->info).start))&&!(strcmp(end,(p->info).end)))
+    {
+      p->pre->next=p->next;
+      p->next->pre=p->pre;
+      free(p);
+      printf("删除成功");
+    }
+    else
+    {
+      p=p->next;
+    }
+  }
+  if(p==NULL)
+  {
+    printf("没有相关记录");
+  }  
+}
