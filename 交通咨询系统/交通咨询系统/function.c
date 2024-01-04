@@ -63,14 +63,14 @@ void CreateNode(Node* head, char start[], char end[], const char* filename) {
     char buffer[256]; // 假设一行不超过 256 个字符
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
         // 从文件中读取每一行的信息
-        char fileStart[V], fileEnd[V];
+        char fileStart[V], fileEnd[V],car[V],train[V];
         double carDistance, carCost, carTime, trainCost, trainTime;
 
         // 假设文件中的格式为："起始地点 终点地点 私家车距离 私家车费用 私家车时间 火车费用 火车时间"
         if(trainCost!=0){
-        sscanf(buffer, "%s %s %lf %lf %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime, &trainCost, &trainTime);
+        sscanf(buffer, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd,car, &carDistance, &carCost, &carTime,train, &trainCost, &trainTime);
         }else{
-        sscanf(buffer, "%s %s %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime);    
+        sscanf(buffer, "%s %s %s %lf %lf %lf", fileStart, fileEnd,car, &carDistance, &carCost, &carTime);    
         }
         // 创建一个新节点并填充信息
         Node* newNode = InitNode();
