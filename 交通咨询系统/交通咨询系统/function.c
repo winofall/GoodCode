@@ -4,57 +4,57 @@
 #include <math.h>
 #include <stdlib.h>
 #include "head.h"
-void CheckNode(Node* head,char start[],char end[])
+void CheckNode(Node* head, char start[], char end[])
 {
-  Node* p;
-  p=head;
-  while(p!=NULL)
-  {
-    if(!(strcmp(start,(p->info).start))&&!(strcmp(end,(p->info).end)))
+    Node* p;
+    p = head;
+    while (p != NULL)
     {
-      if(p->info).infoTrain.cost!=0){
-      printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.",start,end,(p->info).infoCar.distance,(p->info).infoCar.cost,(p->info).infoCar.time,(p->info).infoTrain.cost,(p->info).infoTrain.time);
-      break;
-      }else{
-         printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.",start,end,(p->info).infoCar.distance,(p->info).infoCar.cost,(p->info).infoCar.time);
+        if (!(strcmp(start, (p->info).start)) && !(strcmp(end, (p->info).end)))
+        {
+            if ((p->info).infoTrain.cost != 0){
+                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
+                break; }
+            else {
+                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
+            }
       }
+        else
+        {
+            p = p->next;
+        }
     }
-    else
+    if (p == NULL)
     {
-      p=p->next;
+        printf("没有相关记录");
     }
-  }
-  if(p==NULL)
-  {
-    printf("没有相关记录");
-  }  
 }
-void DeleteNode(Node* head,char start[],char end[])
+void DeleteNode(Node* head, char start[], char end[])
 {
-  Node* p;
-  p=head;
-  while(p!=NULL)
-  {
-    if(!(strcmp(start,(p->info).start))&&!(strcmp(end,(p->info).end)))
+    Node* p;
+    p = head;
+    while (p != NULL)
     {
-      p->pre->next=p->next;
-      p->next->pre=p->pre;
-      free(p);
-      printf("删除成功");
-      break;
+        if (!(strcmp(start, (p->info).start)) && !(strcmp(end, (p->info).end)))
+        {
+            p->pre->next = p->next;
+            p->next->pre = p->pre;
+            free(p);
+            printf("删除成功");
+            break;
+        }
+        else
+        {
+            p = p->next;
+        }
     }
-    else
+    if (p == NULL)
     {
-      p=p->next;
+        printf("没有相关记录");
     }
-  }
-  if(p==NULL)
-  {
-    printf("没有相关记录");
-  }  
 }
-void CreateNode(Node *head, char start[], char end[], const char *filename) {
-    FILE *file = fopen(filename, "1.txt");//打开文件
+void CreateNode(Node* head, char start[], char end[], const char* filename) {
+    FILE* file = fopen(filename, "1.txt");//打开文件
     if (file == NULL) {
         printf("无法打开: %s\n", filename);
         return;
@@ -70,7 +70,7 @@ void CreateNode(Node *head, char start[], char end[], const char *filename) {
         sscanf(buffer, "%s %s %lf %lf %lf %lf %lf", fileStart, fileEnd, &carDistance, &carCost, &carTime, &trainCost, &trainTime);
 
         // 创建一个新节点并填充信息
-        Node *newNode = InitNode();
+        Node* newNode = InitNode();
         strcpy(newNode->info.start, fileStart);
         strcpy(newNode->info.end, fileEnd);
         newNode->info.infoCar.distance = carDistance;
@@ -80,7 +80,7 @@ void CreateNode(Node *head, char start[], char end[], const char *filename) {
         newNode->info.infoTrain.time = trainTime;
 
         // 将新节点添加到链表中
-        Node *current = head;
+        Node* current = head;
         while (current->next != NULL) {
             current = current->next;
         }
