@@ -21,5 +21,6 @@ typedef struct node{
 }Node;
 Node *InitNode();
 void CheckNode(Node* head,string start,string end);
-void CheckList(Node* head);
-void DeleteNode(Node* head);
+void CheckList(Node* head,int start,int end);
+void DeleteNode(Node* head,string start,string end);
+void CreateNode(Node* head,string start,string end);
