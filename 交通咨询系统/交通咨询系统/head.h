@@ -1,4 +1,5 @@
 #pragma once
+#difine V 10
 typedef struct infoCar{
   double distance;
   double cost;
@@ -9,8 +10,8 @@ typedef struct infoTrain{
   double time;
 }InfoTrain;
 typedef struct info{
-  string start;
-  string end;
+  char start[V];
+  char end[V];
   InfoCar infoCar;
   InfoTrain infoTrain;
 }Info;
@@ -20,7 +21,7 @@ typedef struct node{
   Node *pre;
 }Node;
 Node *InitNode();
-void CheckNode(Node* head,string start,string end);
+void CheckNode(Node* head,char start[],char end[]);
 void CheckList(Node* head,int start,int end);
-void DeleteNode(Node* head,string start,string end);
-void CreateNode(Node* head,string start,string end);
+void DeleteNode(Node* head,char start[],char end[]);
+void CreateNode(Node* head,char start[],char end[]);
