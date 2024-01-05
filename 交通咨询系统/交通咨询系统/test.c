@@ -9,7 +9,6 @@ int main()
 {
     char password[100] = {'6', '6', '6', '6'}, Up[100];
     int n=1;
-    Node* head=(Node*)malloc(sizeof(Node)*100);
     CreateNode(head,"1.txt");
     char start[10],end[10];
     double CarDis,CarCost,CarTime,TrainCost,TrainTime;
