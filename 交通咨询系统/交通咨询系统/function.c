@@ -162,6 +162,7 @@ void CreateNode(Node* head, const char* filename) {
 
                 if (prev != NULL) {
                     prev->next = newNode;
+                    newNode->pre=prev;
                 }
             }
         }
@@ -192,6 +193,7 @@ void CreateNode(Node* head, const char* filename) {
 
                 if (prev != NULL) {
                     prev->next = newNode;
+                    newNode->pre=prev;
                 }
             }
 
