@@ -37,6 +37,7 @@ int main()
             scanf("%s", Up);
             if (strcmp(Up, password) == 0)
             {
+                n=1;
                 printf("进入成功\n");
                 while (n&&n!=4)
                 {
