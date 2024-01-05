@@ -39,6 +39,26 @@ void CheckNode(Node* head, char start[], char end[])
         printf("没有相关记录");
     }
 }
+void CheckAllNode(Node* head)
+{
+    Node* p;
+    p = head;
+    while (p != NULL)
+    {
+            if ((p->info).infoTrain.cost != -1) {
+                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
+                break;
+            }
+            else {
+                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
+            }
+            p = p->next;
+    }
+    if (p == NULL)
+    {
+        printf("查询结束");
+    }
+}
 void DeleteNode(Node* head, char start[], char end[], const char* filename) {
     FILE* file = fopen(filename, "r");//打开文件
     if (file == NULL) {
