@@ -11,6 +11,8 @@ int main()
     int n;
     Node* head=(Node*)malloc(sizeof(Node)*100);
     CreateNode(head,"1.txt");
+    char start[10],end[10];
+    double CarDis,CarCost,CarTime,TrainCost,TrainTime;
     printf("--------欢迎使用交通资讯系统--------\n");
     while (n)
     {
