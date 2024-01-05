@@ -25,6 +25,8 @@ typedef struct graph {
 	Node* head;
 	double value[100][100];
 	char place[100][20];
+	int nums;
+	int path[100];
 }MGraph;
 Node* InitNode();
 void CheckNode(Node* head, char start[], char end[]);//查询该结点信息
