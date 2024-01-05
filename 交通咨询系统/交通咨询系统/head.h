@@ -37,4 +37,4 @@ void CreateNode(Node* head,  const char* filename);//从文件中获取信息，
 void GetMoney(Node* head, char start[], char end[]);//从给的起始点，在链表中找出cost最小的路径
 void GetDis(Node* head, char start[], char end[]);//从给的起始点，在链表中找出distance最小的路径
 void GetTime(Node* head, char start[], char end[]);//从给的起始点，在链表中找出time最小的路径
-void AddNode(Node* head, char start[], char end[], double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime);//更新与start，end的结点的数据
+void AddNode(const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime)//更新文件
