@@ -27,7 +27,7 @@ void CheckNode(Node* head, char start[], char end[])
                 break;
             }
             else {
-                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
+                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.\n", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
             }
         }
         else
@@ -51,7 +51,7 @@ void CheckAllNode(Node* head)
             break;
         }
         else {
-            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
+            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.\n", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
         }
         p = p->next;
     }
