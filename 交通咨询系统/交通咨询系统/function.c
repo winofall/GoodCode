@@ -53,7 +53,7 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
         int result1 = sscanf(buffer, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &carDistance, &carCost, &carTime, train, &trainCost, &trainTime);
 
         int result2 = sscanf(buffer, "%s %s %s %lf %lf %lf", fileStart, fileEnd, car, &carDistance, &carCost, &carTime);
-        if (result1 == 7) {
+        if (result1 == 9) {
             // 第一种格式匹配成功
             if ((!(strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0))||(!(strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0))) {
                 // 不是匹配节点，将信息写入临时文件
@@ -64,7 +64,7 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
                 printf(" '%s' 和 '%s'删除成功\n", start, end);
             }
         }
-        else if (result2 == 5) {
+        else if (result2 == 6) {
             // 第二种格式匹配成功
             if (!(strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0)) {
                 // 不是匹配节点，将信息写入临时文件
