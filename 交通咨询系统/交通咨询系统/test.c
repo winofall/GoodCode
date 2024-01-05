@@ -9,6 +9,8 @@ int main()
 {
     char password[100] = {'6', '6', '6', '6'}, Up[100];
     int n;
+    Node* head=(Node*)malloc(sizeof(Node)*100);
+    CreateNode(head,"1.txt");
     printf("--------欢迎使用交通资讯系统--------\n");
     while (n)
     {
