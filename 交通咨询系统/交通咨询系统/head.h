@@ -1,5 +1,5 @@
 #pragma once
-#define V 10
+#define V 20
 typedef struct node Node;
 typedef struct infoCar {
 	double distance;
