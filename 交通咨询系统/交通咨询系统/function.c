@@ -88,7 +88,7 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
     remove(filename);
     rename(tempname, filename);
 }
-void CreateNode(Node* head, char start[], char end[], const char* filename) {
+void CreateNode(Node* head, const char* filename) {
     FILE* file = fopen(filename, "1.txt");//打开文件
     if (file == NULL) {
         printf("无法打开: %s\n", filename);
