@@ -10,7 +10,6 @@ Node* InitNode() {
         // 初始化结构体成员
         newNode->next = NULL;
         newNode->pre = NULL;
-        // 其他初始化工作...
     }
     return newNode;
 }
