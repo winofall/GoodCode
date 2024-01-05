@@ -55,11 +55,13 @@ int main()
                     case 0:
                         printf("退出模式成功\n");
                         break;
-                    case 1: // 增加信息;
+                    case 1:scanf("%s%s%lf%lf%lf%lf%lf",&start,&end,&CarDis,&CarCost,&CarTime,&TrainCost,&TrainTime);
+                            AddNode(head,start,end,CarDis,CarCost,CarTime,TrainCost,TrainTime);  // 增加信息;
                         break;
                     case 2: // 查询所有信息;
                         break;
-                    case 3: // 减少信息;
+                    case 3:scanf("%s%s%",&start,&end);
+                           DeleteNode(head,start,end,"1.txt");// 减少信息;
                         break;
                     case 4: // 退出管理员系统;
                         printf("退出模式成功\n");
