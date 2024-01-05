@@ -28,6 +28,7 @@ typedef struct graph {
 }MGraph;
 Node* InitNode();
 void CheckNode(Node* head, char start[], char end[]);//查询该结点信息
+void CheckAllNode(Node* head);//查询所有结点信息
 void CheckList(Node* head, int start, int end);
 void DeleteNode(Node* head, char start[], char end[],const char* filename);//删除信息
 void CreateNode(Node* head,  const char* filename);//从文件中获取信息，建立结点
