@@ -4,6 +4,16 @@
 #include <math.h>
 #include <stdlib.h>
 #include "head.h"
+Node* InitNode() {
+    Node* newNode = (Node*)malloc(sizeof(Node)); // 分配内存
+    if (newNode != NULL) {
+        // 初始化结构体成员
+        newNode->next = NULL;
+        newNode->pre = NULL;
+        // 其他初始化工作...
+    }
+    return newNode;
+}
 void CheckNode(Node* head, char start[], char end[])
 {
     Node* p;
