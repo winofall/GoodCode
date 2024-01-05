@@ -47,11 +47,11 @@ void CheckAllNode(Node* head)
     while (p != NULL)
     {
         if ((p->info).infoTrain.cost != -1) {
-            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
+            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:lf,时间:lf.",(p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
             break;
         }
         else {
-            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
+            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
         }
         p = p->next;
     }
