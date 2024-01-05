@@ -11,7 +11,7 @@ int main()
     int n=1;
     Node* head = InitNode();
     CreateNode(head,"1.txt");
-    char start[10],end[10];
+    char start[20],end[20];
     double CarDis,CarCost,CarTime,TrainCost,TrainTime;
     printf("--------欢迎使用交通资讯系统--------\n");
     while (n)
