@@ -82,6 +82,7 @@ int main()
             break;
         }
     }
+    free(head);
     system("pause");
     return 0;
 }
