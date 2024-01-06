@@ -57,11 +57,11 @@ void CheckAllNode(Node* head)
     }
     if (p == NULL)
     {
-        printf("查询结束");
+        printf("查询结束\n");
     }
 }
 
-void DeleteNode(Node* head, char start[], char end[], const char* filename) {
+void DeleteNode(Node** head, char start[], char end[], const char* filename) {
     FILE* file = fopen(filename, "r"); // 打开文件
     if (file == NULL) {
         printf("无法打开: %s\n", filename);
@@ -79,6 +79,8 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
     char fileStart[V], fileEnd[V], car[V], train[V];
     double carDistance, carCost, carTime, trainCost, trainTime;
 
+    int found = 0;  // 标记是否找到匹配节点
+
     while (fscanf(file, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &carDistance, &carCost, &carTime, train, &trainCost, &trainTime) == 9) {
         // 第一种格式匹配成功
         if (!(strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0) && !(strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0)) {
@@ -87,7 +89,28 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
         }
         else {
             // 是匹配节点
-            printf(" '%s' 和 '%s'删除成功\n", start, end);
+            found = 1;  // 找到匹配节点
+
+            // 删除链表中的节点
+            Node* current = *head;
+            Node* prev = NULL;
+
+            while (current != NULL) {
+                if ((strcmp(current->info.start, start) == 0 && strcmp(current->info.end, end) == 0) ||
+                    (strcmp(current->info.start, end) == 0 && strcmp(current->info.end, start) == 0)) {
+                    if (prev == NULL) {
+                        *head = current->next;
+                    }
+                    else {
+                        prev->next = current->next;
+                    }
+                    free(current);
+                    break;
+                }
+
+                prev = current;
+                current = current->next;
+            }
         }
     }
 
@@ -97,7 +120,16 @@ void DeleteNode(Node* head, char start[], char end[], const char* filename) {
     // 删除原始文件并重命名临时文件
     remove(filename);
     rename(tempname, filename);
+
+    // 打印删除成功的信息
+    if (found) {
+        printf(" '%s' 和 '%s'删除成功\n", start, end);
+    }
+    else {
+        printf("未找到匹配的节点: '%s' 和 '%s'\n", start, end);
+    }
 }
+
 
 
 void CreateNode(Node** head, const char* filename) {
@@ -139,46 +171,77 @@ void CreateNode(Node** head, const char* filename) {
 }
 
 
-void AddNode(const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
+void AddNode(Node** head, const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
+
+    // 1. 打开文件
     FILE* file = fopen(filename, "r+");  // 以读写模式打开文件
     if (file == NULL) {
         printf("无法打开文件: %s\n", filename);
         return;
     }
 
+    // 2. 定义文件和链表相关的变量
     char fileStart[V], fileEnd[V], car[V], train[V];
     double fileCarDistance, fileCarCost, fileCarTime, fileTrainCost, fileTrainTime;
 
     long currentPosition = 0;  // 记录当前文件位置
     int found = 0;  // 标记是否找到匹配节点
 
-    // 处理第一种格式的输入
+    // 3. 循环读取文件内容，查找匹配节点
     while (fscanf(file, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &fileCarDistance, &fileCarCost, &fileCarTime, train, &fileTrainCost, &fileTrainTime) == 9) {
         if (strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0 || strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0) {
             // 找到匹配节点，更新其数据
             fseek(file, currentPosition, SEEK_SET);  // 移动文件指针到当前行的开头
-            fprintf(file, "%s %s 私家车:%.2lf %.2lf %.2lf 火车:%.2lf %.2lf\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
+            fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
             found = 1;  // 找到并更新后标记为true
             break;  // 找到并更新后跳出循环
         }
         currentPosition = ftell(file);  // 记录当前文件位置
     }
 
-    // 处理第二种格式的输入
-    if (!found) {  // 如果第一种格式找到了匹配节点，则不再处理第二种格式
-        rewind(file); // 将文件指针重新定位到文件开头
-        currentPosition = 0;  // 重新记录当前文件位置
+    // 4. 如果没有找到匹配节点，追加新节点的数据到文件末尾
+    if (!found) {
+        // 移动文件指针到文件末尾，获取文件长度
+        fseek(file, 0, SEEK_END);
+        long fileLength = ftell(file);
 
-        while (fscanf(file, "%s %s %s %lf %lf %lf", fileStart, fileEnd, car, &fileCarDistance, &fileCarCost, &fileCarTime) == 6) {
-            if (strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0 || strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0) {
-                // 找到匹配节点，更新其数据
-                fseek(file, currentPosition, SEEK_SET);  // 移动文件指针到当前行的开头
-                fprintf(file, "%s %s 私家车:%.2lf %.2lf %.2lf\n", start, end, CarDistance, CarCost, Cartime);
-                break;  // 找到并更新后跳出循环
+        // 如果文件不为空，且最后一个字符不是换行符，则在追加新节点前添加换行符
+        if (fileLength > 0) {
+            fseek(file, -1, SEEK_END);
+            char lastChar = fgetc(file);
+            if (lastChar != '\n') {
+                fprintf(file, "\n");
             }
-            currentPosition = ftell(file);  // 记录当前文件位置
         }
+
+        // 再次移动文件指针到文件末尾，准备追加新节点
+        fseek(file, 0, SEEK_END);
+        fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
     }
 
+    // 5. 关闭文件
     fclose(file);
+
+    // 6. 在链表中追加新节点
+    Node* newNode = InitNode();  // 创建新节点
+    strcpy(newNode->info.start, start);
+    strcpy(newNode->info.end, end);
+    newNode->info.infoCar.distance = CarDistance;
+    newNode->info.infoCar.cost = CarCost;
+    newNode->info.infoCar.time = Cartime;
+    newNode->info.infoTrain.cost = TrainCost;
+    newNode->info.infoTrain.time = TrainTime;
+
+    // 将新节点插入链表
+    if (*head == NULL) {
+        *head = newNode;  // 如果链表为空，直接将新节点设为头节点
+    }
+    else {
+        Node* temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;  // 移动到链表末尾
+        }
+        temp->next = newNode;  // 将新节点插入末尾
+        newNode->pre = temp;
+    }
 }
