@@ -4,15 +4,15 @@
 #include <math.h>
 #include <stdlib.h>
 #include "head.h"
-
 int main()
 {
-    char password[100] = {'6', '6', '6', '6'}, Up[100];
-    int n=1;
+    char password[100] = { '6', '6', '6', '6' }, Up[100];
+    int n = 1;
     Node* head = InitNode();
-    CreateNode(head,"1.txt");
-    char start[20],end[20];
-    double CarDis,CarCost,CarTime,TrainCost,TrainTime;
+    Node** h = &head;
+    CreateNode(h, "1.txt");
+    char start[20], end[20];
+    double CarDis, CarCost, CarTime, TrainCost, TrainTime;
     printf("--------欢迎使用交通资讯系统--------\n");
     while (n)
     {
@@ -39,9 +39,9 @@ int main()
             scanf("%s", Up);
             if (strcmp(Up, password) == 0)
             {
-                n=1;
+                n = 1;
                 printf("进入成功\n");
-                while (n&&n!=4)
+                while (n && n != 4)
                 {
                     printf("-----------请选择以下功能-----------\n");
                     printf("-------------0.退出系统-------------\n");
@@ -55,13 +55,13 @@ int main()
                     case 0:
                         printf("退出模式成功\n");
                         break;
-                    case 1:scanf("%s%s%lf%lf%lf%lf%lf",&start,&end,&CarDis,&CarCost,&CarTime,&TrainCost,&TrainTime);
-                            AddNode(head,start,end,CarDis,CarCost,CarTime,TrainCost,TrainTime);  // 增加信息;
+                    case 1:scanf("%s%s%lf%lf%lf%lf%lf", &start, &end, &CarDis, &CarCost, &CarTime, &TrainCost, &TrainTime);
+                        AddNode("1.txt", start, end, CarDis, CarCost, CarTime, TrainCost, TrainTime);  // 增加信息;
                         break;
                     case 2:CheckAllNode(head);// 查询所有信息;
                         break;
-                    case 3:scanf("%s%s%",&start,&end);
-                           DeleteNode(head,start,end,"1.txt");// 减少信息;
+                    case 3:scanf("%s%s%", &start, &end);
+                        DeleteNode(head, start, end, "1.txt");// 减少信息;
                         break;
                     case 4: // 退出管理员系统;
                         printf("退出模式成功\n");
