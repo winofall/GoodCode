@@ -4,13 +4,23 @@
 #include <math.h>
 #include <stdlib.h>
 #include "head.h"
+
 int main()
 {
     char password[100] = { '6', '6', '6', '6' }, Up[100];
+    char fileName[100];
+    printf("请输入读入的文本文件名:");
+    scanf("%s", fileName);
     int n = 1;
     Node* head = InitNode();
-    Node** h = &head;
-    CreateNode(h, "1.txt");
+    MGraph m;
+    m.nums = 1;
+    m.head = head;
+    Node** h =&m.head;
+    while (!CreateNode(&m, h, fileName)) {
+        printf("请重新输入读入的文本文件名:");
+        scanf("%s", fileName);
+    };
     char start[20], end[20];
     double CarDis, CarCost, CarTime, TrainCost, TrainTime;
     printf("--------欢迎使用交通资讯系统--------\n");
@@ -29,10 +39,25 @@ int main()
             printf("退出成功\n");
             break;
         case 1: // 查询最短路径;
+            printf("请输入起点:");
+            scanf("%s", start);
+            printf("请输入终点:");
+            scanf("%s", end);
+            GetDis(&m, &start, &end);
             break;
         case 2: // 查询最少金额;
+            printf("请输入起点:");
+            scanf("%s", start);
+            printf("请输入终点:");
+            scanf("%s", end);
+            GetMoney(&m, start, end);
             break;
         case 3: // 查询最短时间;
+            printf("请输入起点:");
+            scanf("%s", start);
+            printf("请输入终点:");
+            scanf("%s", end);
+            GetTime(&m, start, end);
             break;
         case 4: // 进入管理员系统;
             printf("请输入密码:");
@@ -55,13 +80,13 @@ int main()
                     case 0:
                         printf("退出模式成功\n");
                         break;
-                    case 1:scanf("%s%s%lf%lf%lf%lf%lf", &start, &end, &CarDis, &CarCost, &CarTime, &TrainCost, &TrainTime);
-                        AddNode(h,"1.txt", start, end, CarDis, CarCost, CarTime, TrainCost, TrainTime);  // 增加信息;
+                    case 1:scanf("%s%s%lf%lf%lf%lf%lf", start, end, &CarDis, &CarCost, &CarTime, &TrainCost, &TrainTime);
+                        AddNode(m,h, fileName, start, end, CarDis, CarCost, CarTime, TrainCost, TrainTime);  // 增加信息;
                         break;
                     case 2:CheckAllNode(head);// 查询所有信息;
                         break;
-                    case 3:scanf("%s%s%", &start, &end);
-                        DeleteNode(h, start, end, "1.txt");// 减少信息;
+                    case 3:scanf("%s%s", start, end);
+                        DeleteNode(h, start, end, fileName);// 减少信息;
                         break;
                     case 4: // 退出管理员系统;
                         printf("退出模式成功\n");
