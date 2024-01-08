@@ -14,6 +14,7 @@ Node* InitNode() {
     }
     return newNode;
 }
+
 void CheckNode(Node* head, char start[], char end[])
 {
     Node* p;
@@ -22,12 +23,9 @@ void CheckNode(Node* head, char start[], char end[])
     {
         if (!(strcmp(start, (p->info).start)) && !(strcmp(end, (p->info).end)))
         {
-            if ((p->info).infoTrain.cost != -1) {
-                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
-            }
-            else {
-                printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf.", start, end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
-            }
+            printf("%s<------->%s    预估距离:%.2lfkm\n  私家车:预计耗时%.2lf小时,需交过路费%.2lf元\n", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.time, (p->info).infoCar.cost);
+            if ((p->info).infoTrain.cost != -1)
+                printf("  火车:价格:%.2lf元,耗时:%.2lf小时\n", (p->info).infoTrain.cost, (p->info).infoTrain.time);
             break;
         }
         else
@@ -45,15 +43,15 @@ void CheckAllNode(Node* head)
 {
     Node* p;
     p = head->next;
+    int num = 1;
+    printf("信息如下：\n-------------------------------------------\n");
     while (p != NULL)
     {
-        if ((p->info).infoTrain.cost != -1) {
-            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf;火车:花费:%lf,时间:%lf\n", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time, (p->info).infoTrain.cost, (p->info).infoTrain.time);
-        }
-        else {
-            printf("%s %s 私家车:距离:%lf,花费:%lf,时间:%lf\n", (p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.cost, (p->info).infoCar.time);
-        }
+        printf("%d.%s<------->%s    预估距离:%.2lfkm\n  私家车:预计耗时%.2lf小时,需交过路费%.2lf元\n", num++,(p->info).start, (p->info).end, (p->info).infoCar.distance, (p->info).infoCar.time, (p->info).infoCar.cost);
+        if ((p->info).infoTrain.cost != -1)
+            printf("  火车:价格:%.2lf元,耗时:%.2lf小时\n", (p->info).infoTrain.cost, (p->info).infoTrain.time);
         p = p->next;
+        printf("-------------------------------------------\n");
     }
     if (p == NULL)
     {
@@ -130,19 +128,17 @@ void DeleteNode(Node** head, char start[], char end[], const char* filename) {
     }
 }
 
-
-
-void CreateNode(Node** head, const char* filename) {
+int CreateNode(MGraph *m,Node** head, const char* filename) {
     FILE* file = fopen(filename, "r"); // 使用 fopen 打开文件
     if (file == NULL) {
         printf("无法打开: %s\n", filename);
-        return;
+        return 0;
     }
 
     char fileStart[V], fileEnd[V], car[V], train[V];
     double carDistance, carCost, carTime, trainCost, trainTime;
 
-    while (fscanf(file, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &carDistance, &carCost, &carTime, train, &trainCost, &trainTime) == 9) {
+    while (fscanf(file, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &carDistance, &carTime, &carCost, train, &trainTime, &trainCost) == 9) {
         // 创建一个新节点并填充信息
         Node* newNode = InitNode();
         strcpy(newNode->info.start, fileStart);
@@ -152,10 +148,12 @@ void CreateNode(Node** head, const char* filename) {
         newNode->info.infoCar.time = carTime;
         newNode->info.infoTrain.cost = trainCost;
         newNode->info.infoTrain.time = trainTime;
-
+        AddPlace(m, fileStart);
+        AddPlace(m, fileEnd);
         // 将新节点添加到链表中
         if (*head == NULL) {
             *head = newNode;
+            newNode->next = NULL;
         }
         else {
             Node* current = *head;
@@ -168,10 +166,11 @@ void CreateNode(Node** head, const char* filename) {
 
 
     fclose(file);
+    return 1;
 }
 
 
-void AddNode(Node** head, const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
+void AddNode(MGraph m,Node** head, const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
 
     // 1. 打开文件
     FILE* file = fopen(filename, "r+");  // 以读写模式打开文件
@@ -213,7 +212,8 @@ void AddNode(Node** head, const char* filename, const char* start, const char* e
                 fprintf(file, "\n");
             }
         }
-
+        AddPlace(&m, fileStart);
+        AddPlace(&m, fileEnd);
         // 再次移动文件指针到文件末尾，准备追加新节点
         fseek(file, 0, SEEK_END);
         fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
@@ -243,5 +243,174 @@ void AddNode(Node** head, const char* filename, const char* start, const char* e
         }
         temp->next = newNode;  // 将新节点插入末尾
         newNode->pre = temp;
+    }
+}
+void AddPlace(MGraph* m, char place[])
+{
+    for (int i = 1; i <= m->nums; i++)
+    {
+        if (strcmp(m->place[i], place) == 0)
+            return;
+    }
+    strcpy(m->place[m->nums], place);
+    m->nums++;
+}
+int FindPlace(MGraph m, char place[])
+{
+    for (int i = 1; i <= m.nums; i++)
+    {
+        if (strcmp(m.place[i], place) == 0)
+            return i;
+    }
+    return 0;
+}
+Node* GetNode(Node* head, char start[], char end[])
+{
+    Node* p;
+    p = head;
+    while (p != NULL)
+    {
+        if ((strcmp(p->info.start, start) == 0 && strcmp(p->info.end, end) == 0) || (strcmp(p->info.start, end) == 0 && strcmp(p->info.end, start) == 0))
+            return p;
+        p = p->next;
+    }
+    return NULL;
+}
+void PrintPath(MGraph* m, char *start, char *end, int vk)
+{
+    int i = FindPlace(*m, start);
+    int j = FindPlace(*m, end);
+    int num[100];
+    int path[100];
+    Value kind[100];
+    Dijkstra(*m, i, j, &path, &kind);
+    int k;
+    num[0] = 0;
+    for (k = 1; num[k - 1] != i; k++)
+    {
+        num[k] = j;
+        j = path[j];
+    }
+    double sum = 0;
+    printf("从%s到%s的路径如下:", start, end);
+    for (int s = k - 1; s != 1; s--)
+    {
+        printf("\n%d.%s-->%s,", k-s, m->place[num[s]], m->place[num[s - 1]]);
+        if (vk != 2)
+            printf("搭乘%s,", kind[num[s-1]].kind == 1 ? "私家车" : "火车");
+        if (vk == 1)
+            printf("需交过路费%.2lf元", kind[num[s-1]].value);
+        else if (vk == 2)
+            printf("需要行驶%.1lf公里", kind[num[s-1]].value);
+        else
+            printf("长达%.1lf小时", kind[num[s-1]].value);
+        sum += kind[num[s-1]].value;
+    }
+    printf("\n此路线总计");
+    if (vk == 1)
+        printf("需交过路费%.2lf元\n", sum);
+    else if (vk == 2)
+        printf("需要行驶%.1lf公里\n", sum);
+    else
+        printf("长达%.1lf小时\n", sum);
+};
+// 从给的起始点，在链表中找出cost最小的路径
+void GetMoney(MGraph* m, char start[], char end[])
+{
+    for (int i = 1; i <= m->nums; i++)
+    {
+        for (int j = 1; j <= m->nums; j++)
+        {
+            Node* p = GetNode(m->head, m->place[i], m->place[j]);
+            if (p == NULL)
+            {
+                m->value[i][j].value = 0;
+            }
+            else if (p->info.infoTrain.cost == -1 || p->info.infoTrain.cost > p->info.infoCar.cost)
+            {
+                m->value[i][j].value = p->info.infoCar.cost;
+                m->value[i][j].kind = 1;
+            }
+            else
+            {
+                m->value[i][j].value = p->info.infoTrain.cost;
+                m->value[i][j].kind = 2;
+            }
+        }
+    }
+    PrintPath(m, start, end, 1);
+};
+// 从给的起始点，在链表中找出distance最小的路径
+void GetDis(MGraph *m, char *start, char *end) {
+    for (int i = 1; i <= m->nums; i++)
+    {
+        for (int j = 1; j <= m->nums; j++)
+        {
+            Node* p = GetNode(m->head, m->place[i], m->place[j]);
+            if (p == NULL)
+            {
+                m->value[i][j].value = 0;
+            }
+            else {
+                m->value[i][j].value = p->info.infoCar.distance;
+                m->value[i][j].kind = 0;
+            }
+        }
+    }
+    PrintPath(m, start, end, 2);
+};
+
+void GetTime(MGraph* m, char start[], char end[]) {
+    for (int i = 1; i <= m->nums; i++)
+    {
+        for (int j = 1; j <= m->nums; j++)
+        {
+            Node* p = GetNode(m->head, m->place[i], m->place[j]);
+            if (p == NULL)
+            {
+                m->value[i][j].value = 0;
+            }
+            else if (p->info.infoTrain.time == -1 || p->info.infoTrain.time > p->info.infoCar.time)
+            {
+                m->value[i][j].value = p->info.infoCar.time;
+                m->value[i][j].kind = 1;
+            }
+            else
+            {
+                m->value[i][j].value = p->info.infoTrain.time;
+                m->value[i][j].kind = 2;
+            }
+        }
+    }
+    PrintPath(m, start, end, 3);
+};
+void Dijkstra(MGraph m, int i, int j, int path[], Value vk[])
+{
+    int visited[100];
+    double values[100];
+    values[i] = 0;
+    while (i != j)
+    {
+        visited[i] = 1;
+        for (int k = 1; k <= m.nums; k++)
+        {
+            if (visited[k]==1|| m.value[i][k].value==0)
+                continue;
+            if (values[i] + m.value[i][k].value >= values[k]&&values[k]>0)
+                continue;
+            values[k] = values[i] + m.value[i][k].value;
+            path[k] = i;
+            vk[k] = m.value[i][k];
+        }
+        double min = 999999;
+        for (int k = 1; k <= m.nums; k++)
+        {
+            if (visited[k]==1)
+                continue;
+            if (values[k] >= min || values[k] <=0)
+                continue;
+            min = values[k];
+            i = k;
+        }
     }
 }
