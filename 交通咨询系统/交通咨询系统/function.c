@@ -59,7 +59,7 @@ void CheckAllNode(Node* head)
     }
 }
 
-void DeleteNode(Node** head, char start[], char end[], const char* filename) {
+void DeleteNode(MGraph* m,Node** head, char start[], char end[], const char* filename) {
     FILE* file = fopen(filename, "r"); // 打开文件
     if (file == NULL) {
         printf("无法打开: %s\n", filename);
@@ -90,7 +90,7 @@ void DeleteNode(Node** head, char start[], char end[], const char* filename) {
             found = 1;  // 找到匹配节点
 
             // 删除链表中的节点
-            Node* current = *head;
+            Node* current = m->head;
             Node* prev = NULL;
 
             while (current != NULL) {
@@ -156,7 +156,7 @@ int CreateNode(MGraph *m,Node** head, const char* filename) {
             newNode->next = NULL;
         }
         else {
-            Node* current = *head;
+            Node* current = head;
             while (current->next != NULL) {
                 current = current->next;
             }
@@ -169,8 +169,7 @@ int CreateNode(MGraph *m,Node** head, const char* filename) {
     return 1;
 }
 
-
-void AddNode(MGraph m,Node** head, const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
+void AddNode(MGraph* m,Node** head, const char* filename, const char* start, const char* end, double CarDistance, double CarCost, double Cartime, double TrainCost, double TrainTime) {
 
     // 1. 打开文件
     FILE* file = fopen(filename, "r+");  // 以读写模式打开文件
@@ -188,7 +187,7 @@ void AddNode(MGraph m,Node** head, const char* filename, const char* start, cons
 
     // 3. 循环读取文件内容，查找匹配节点
     while (fscanf(file, "%s %s %s %lf %lf %lf %s %lf %lf", fileStart, fileEnd, car, &fileCarDistance, &fileCarCost, &fileCarTime, train, &fileTrainCost, &fileTrainTime) == 9) {
-        if (strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0 || strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0) {
+        if( (strcmp(fileStart, start) == 0 && strcmp(fileEnd, end) == 0 || strcmp(fileStart, end) == 0 && strcmp(fileEnd, start) == 0)) {
             // 找到匹配节点，更新其数据
             fseek(file, currentPosition, SEEK_SET);  // 移动文件指针到当前行的开头
             fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
@@ -212,8 +211,8 @@ void AddNode(MGraph m,Node** head, const char* filename, const char* start, cons
                 fprintf(file, "\n");
             }
         }
-        AddPlace(&m, fileStart);
-        AddPlace(&m, fileEnd);
+        AddPlace(m, fileStart);
+        AddPlace(m, fileEnd);
         // 再次移动文件指针到文件末尾，准备追加新节点
         fseek(file, 0, SEEK_END);
         fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
@@ -237,14 +236,16 @@ void AddNode(MGraph m,Node** head, const char* filename, const char* start, cons
         *head = newNode;  // 如果链表为空，直接将新节点设为头节点
     }
     else {
-        Node* temp = *head;
+        Node* temp = m->head;
         while (temp->next != NULL) {
             temp = temp->next;  // 移动到链表末尾
         }
         temp->next = newNode;  // 将新节点插入末尾
         newNode->pre = temp;
     }
+    printf("添加成功！\n");
 }
+
 void AddPlace(MGraph* m, char place[])
 {
     for (int i = 1; i <= m->nums; i++)
@@ -255,6 +256,7 @@ void AddPlace(MGraph* m, char place[])
     strcpy(m->place[m->nums], place);
     m->nums++;
 }
+
 int FindPlace(MGraph m, char place[])
 {
     for (int i = 1; i <= m.nums; i++)
@@ -264,6 +266,7 @@ int FindPlace(MGraph m, char place[])
     }
     return 0;
 }
+
 Node* GetNode(Node* head, char start[], char end[])
 {
     Node* p;
@@ -276,6 +279,7 @@ Node* GetNode(Node* head, char start[], char end[])
     }
     return NULL;
 }
+
 void PrintPath(MGraph* m, char *start, char *end, int vk)
 {
     int i = FindPlace(*m, start);
@@ -303,16 +307,16 @@ void PrintPath(MGraph* m, char *start, char *end, int vk)
         else if (vk == 2)
             printf("需要行驶%.1lf公里", kind[num[s-1]].value);
         else
-            printf("长达%.1lf小时", kind[num[s-1]].value);
+            printf("耗时%.1lf小时", kind[num[s-1]].value);
         sum += kind[num[s-1]].value;
     }
     printf("\n此路线总计");
     if (vk == 1)
-        printf("需交过路费%.2lf元\n", sum);
+        printf("预计耗资%.2lf元\n", sum);
     else if (vk == 2)
         printf("需要行驶%.1lf公里\n", sum);
     else
-        printf("长达%.1lf小时\n", sum);
+        printf("耗时%.1lf小时\n", sum);
 };
 // 从给的起始点，在链表中找出cost最小的路径
 void GetMoney(MGraph* m, char start[], char end[])
@@ -384,6 +388,7 @@ void GetTime(MGraph* m, char start[], char end[]) {
     }
     PrintPath(m, start, end, 3);
 };
+
 void Dijkstra(MGraph m, int i, int j, int path[], Value vk[])
 {
     int visited[100];
