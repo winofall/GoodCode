@@ -106,6 +106,7 @@ int main()
             break;
         }
     }
+    free(m);
     free(head);
     system("pause");
     return 0;
