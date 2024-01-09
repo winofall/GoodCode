@@ -27,8 +27,8 @@ typedef struct value {
 }Value;
 typedef struct graph {
 	Node* head;
-	Value value[100][100];
-	char place[100][20];
+	Value value[20][20];
+	char place[20][20];
 	int nums;
 }MGraph;
 Node* InitNode();
