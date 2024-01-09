@@ -91,7 +91,7 @@ int main()
                         printf("退出模式成功\n");
                         break;
                     default:
-                        printf("输入错误\n");
+                        printf("该指令不存在\n");
                         break;
                     }
                 }
@@ -102,7 +102,7 @@ int main()
             }
             break;
         default:
-            printf("输入错误");
+            printf("该指令不存在\n");
             break;
         }
     }
