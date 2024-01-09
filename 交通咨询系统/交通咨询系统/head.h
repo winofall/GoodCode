@@ -43,3 +43,6 @@ void AddNode(MGraph* m,Node** head, const char* filename, const char* start, con
 void Dijkstra(MGraph m, int i, int j, int path[], Value vk[]);
 void AddPlace(MGraph *m, char place[]);//添加地点进m图
 void PrintPath(MGraph* m, char start[], char end[], int vk);//打印路径
+int FindPlace(MGraph m, char place[]);
+Node* GetNode(Node* head, char start[], char end[]);
+void GetSE(MGraph m, char* start, char* end);
