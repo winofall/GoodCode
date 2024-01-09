@@ -211,8 +211,8 @@ void AddNode(MGraph* m,Node** head, const char* filename, const char* start, con
                 fprintf(file, "\n");
             }
         }
-        AddPlace(m, fileStart);
-        AddPlace(m, fileEnd);
+        AddPlace(m, start);
+        AddPlace(m, end);
         // 再次移动文件指针到文件末尾，准备追加新节点
         fseek(file, 0, SEEK_END);
         fprintf(file, "%s %s 私家车 %.2f %.2f %.2f 火车 %.2f %.2f\n", start, end, CarDistance, CarCost, Cartime, TrainCost, TrainTime);
